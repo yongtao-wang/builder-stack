@@ -4,6 +4,35 @@
 
 面向中小型项目的 Claude Code 技能包。它从 [pstack](https://github.com/cursor/plugins/tree/main/pstack)（Lauren Tan）的 Claude Code 移植版 [pstack-claude](https://github.com/michael-denyer/pstack-claude) 裁剪而来，只保留"先验证、再交付"的核心流程。
 
+## 为什么要做 builder-stack
+
+pstack 面向的是长周期、跨多种 agent 运行环境的工程项目：67 个技能、23 个 playbook，还要适配十来种 agent 运行环境。大多数中小项目只用得到其中一小部分，剩下的内容依然会占用上下文和注意力。builder-stack 保留了"先验证、再交付"的核心，并补上了小团队日常需要的几道护栏。
+
+| | pstack-claude | builder-stack |
+| --- | --- | --- |
+| 规模 | 67 个技能、23 个 playbook | 45 个技能、3 个 playbook（Investigation、Bug fix、Feature），外加收尾用的 Opening a PR |
+| 运行环境 | 十来种 agent 运行环境 | 只支持 Claude Code，不用再读其他平台的适配说明 |
+| 计划 | 在 playbook 内部做计划，做完直接动手 | 写出计划，等你批准后才改代码 |
+| 项目初始化 | 只配置模型表和钩子（`setup-pstack`） | `init` 还会生成受管理的 AGENTS.md 区块和 CLAUDE.md 导入，写入前先给你看 diff |
+| AGENTS.md 规则 | 不生成 | 条件式的"When…"规则，加上默认留空（`TODO`）的 Commands 和 Patterns 表格，不预设任何语言或框架 |
+| TDD | 只用于有便宜测试路径的 bug 修复 | Feature 中的行为变更也适用 |
+| 文档 | 没有更新文档这一步 | Bug fix 和 Feature 都会在同一次改动里更新文档和 feature map |
+| Known issues | 不查 | Bug fix 第一步先查 known-issues 文档，发现了不打算修的问题就记一条 |
+| 小任务 | 由会话钩子路由 | 只改一个文件、检查方式明显的改动直接做，不走 playbook |
+
+### 适合什么场景
+
+- 你用 Claude Code，个人开发或者小团队。
+- 项目规模中小，模块不多，而不是一堆微服务。
+- 你希望 agent 改代码之前，先让你批准计划。
+- 你希望每个仓库都从同一种 AGENTS.md 结构起步，随着项目推进再逐步补齐。
+
+### 什么时候该用 pstack
+
+- 你还会用 Cursor、Codex 等其他运行环境。
+- 任务跨好几天、涉及很多个连续的 PR，或者需要盯 CI、自动发布、性能爬坡。这些 playbook 在这里都删掉了。
+- 你希望 agent 默认无人值守运行。builder-stack 也能做到，但只有在你明确写"autonomous"时才会这样。
+
 ## 安装
 
 ```text

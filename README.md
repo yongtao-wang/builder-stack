@@ -4,6 +4,35 @@
 
 A lean, verification-first Claude Code skill pack for small and medium projects. It is trimmed from [pstack-claude](https://github.com/michael-denyer/pstack-claude), the Claude Code port of Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack), and keeps only the core loop: plan, build, prove it works.
 
+## Why builder-stack
+
+pstack is built for long, multi-runtime engineering programs: 67 skills, 23 playbooks, and mappings for a dozen agent runtimes. Most small and medium projects use a fraction of that, and the rest still costs context and attention. builder-stack keeps the verification-first core and adds the guardrails a small team wants day to day.
+
+| | pstack-claude | builder-stack |
+| --- | --- | --- |
+| Scope | 67 skills, 23 playbooks | 45 skills, 3 playbooks (Investigation, Bug fix, Feature) plus Opening a PR |
+| Runtimes | About a dozen agent runtimes | Claude Code only, with no other platform mappings to read |
+| Planning | Plans inside the playbook, then builds | Stops for your approval of a written plan before any code changes |
+| Project setup | Model sheet and hook (`setup-pstack`) | `init` also writes a managed AGENTS.md section and a CLAUDE.md import, shown as a diff first |
+| AGENTS.md rules | None generated | Conditional "When…" rules, plus Commands and Patterns tables left as `TODO`, so no language or framework is assumed |
+| TDD | Bug fixes with a cheap test target | Also behavior changes in Feature |
+| Docs | No update step | Bug fix and Feature update the docs and the feature map in the same change |
+| Known issues | No lookup | Bug fix searches the known-issues doc first. New unfixed issues get an entry |
+| Small tasks | Routed by the session hook | A one-file change with an obvious check skips the playbook |
+
+### When it fits
+
+- You work in Claude Code, alone or in a small team.
+- The project is small to medium, with a handful of modules rather than many services.
+- You want to approve a plan before the agent edits code.
+- You want every repository to start from the same AGENTS.md shape and fill it in as the project grows.
+
+### When to use pstack instead
+
+- You also work in Cursor, Codex, or another runtime.
+- The work spans days or many stacked PRs, or needs CI babysitting, shipping automation, or perf hill-climbing. Those playbooks were removed here.
+- You want the agent to run unattended by default. builder-stack can, but only when you say "autonomous".
+
 ## Install
 
 ```text
