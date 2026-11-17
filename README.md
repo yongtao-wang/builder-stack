@@ -1,83 +1,89 @@
 # builder-stack
 
-面向中小型项目的 Claude Code 技能包。它从 [pstack](https://github.com/cursor/plugins/tree/main/pstack)（Lauren Tan）的 Claude Code 移植版 [pstack-claude](https://github.com/michael-denyer/pstack-claude) 裁剪而来，只保留"先验证、再交付"的核心流程。
+**English** | [简体中文](README.zh-CN.md)
 
-A lean, verification-first Claude Code skill pack for small and medium projects, trimmed from pstack.
+A lean, verification-first Claude Code skill pack for small and medium projects. It is trimmed from [pstack-claude](https://github.com/michael-denyer/pstack-claude), the Claude Code port of Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack), and keeps only the core loop: plan, build, prove it works.
 
-## 安装
+## Install
 
 ```text
 /plugin marketplace add yongtao-wang/builder-stack
 /plugin install builder@builder-stack
 ```
 
-装好后，在项目根目录运行一次：
+Restart Claude Code or open a new session afterward. For a private repository, Claude Code needs access to your GitHub (for example, `gh` signed in locally or git credentials configured).
+
+To update, run `/plugin marketplace update builder-stack`. If the plugin does not update on its own, update it from `/plugin`. To uninstall, run `/plugin uninstall builder@builder-stack`.
+
+Then run this once from the project root:
 
 ```text
 /builder:init
 ```
 
-init 会依次完成以下几件事，每一步写文件前都会先征求你的同意：
+Init does the following, and asks before it writes any file:
 
-1. 配置模型和 SessionStart 钩子（调用 `setup-builder`）。
-2. 询问是否生成 verify 技能和 feature map（调用 `create-verification-skill`）。
-3. 查找项目里的架构文档和 known-issues 文档。找不到时，问你是创建一个空模板，还是不加相关规则。
-4. 在 `AGENTS.md` 末尾追加一段用 `<!-- builder:start -->` 和 `<!-- builder:end -->` 包起来的内容，并让 `CLAUDE.md` 导入 `@AGENTS.md`。写入前会先给你看 diff。
+1. Configures models and the SessionStart hook (via `setup-builder`).
+2. Offers to generate a verify skill and feature map (via `create-verification-skill`).
+3. Looks for an architecture doc and a known-issues doc. When one is missing, it asks whether to create a stub or leave out the matching rule.
+4. Appends a section wrapped in `<!-- builder:start -->` and `<!-- builder:end -->` to `AGENTS.md`, and makes `CLAUDE.md` import `@AGENTS.md`. It shows the diff first.
 
-追加的内容包括：Commands 表格、Patterns 表格、条件式规则，以及一个空的 Do not touch 段落。Commands 和 Patterns 默认都是 `TODO`，因为 init 不会预设项目用什么语言或框架；agent 在命令第一次跑通时会自己补上。重复运行 init 只会替换标记之间的内容，你在别处写的东西不会被改动。
+The section holds a Commands table, a Patterns table, conditional "When…" rules, and an empty Do-not-touch list. Commands and Patterns start as `TODO`, because init does not assume a language or framework. The agent fills a row the first time that command succeeds. Re-running init replaces only the text between the markers. Everything else you wrote stays untouched.
 
-## 日常用法
+## Everyday use
 
 ```text
-/builder:builder-mode 登录后偶尔跳回首页。先复现，再修复并验证。
-/builder:builder-mode 新增导出 CSV 功能。不要改现有 API。
-/builder:builder-mode 搞清楚缓存为什么在登出后还在。先不要改代码。
+/builder:builder-mode Login sometimes bounces back to the home page. Reproduce it first, then fix and verify.
+/builder:builder-mode Add CSV export. Don't change the existing API.
+/builder:builder-mode Find out why the cache survives logout. Don't change code yet.
 ```
 
-builder-mode 会根据请求选一个 playbook，把它的步骤原样抄进任务列表，并要求拿到证据之后才能报告完成。
+builder-mode matches the request to a playbook, copies its steps into the task list verbatim, and requires evidence before it reports done.
 
-**先计划，再动手。** Bug fix 和 Feature 两个 playbook 都会先做只读调研，然后写出计划，等你批准后才开始改代码。计划包括：目标、可验证的完成条件、要改的文件、先写哪个失败的测试、验证方式、要更新的文档、风险点。如果想跳过审批，在提示里写"autonomous"或"no plan approval"即可。你也可以先按 Shift+Tab 进入 Claude Code 的 plan mode，再调用 builder-mode。模式是"粘住"的：之后说"继续"会沿用同一个 playbook，换任务时说"new task"。
+**Plan first, then build.** The Bug fix and Feature playbooks do read-only research, write a plan, and wait for your approval before they change code. The plan covers the goal, falsifiable done criteria, the files to change, the failing test to write first, how it will be verified, the docs to update, and the risks. To skip approval, say "autonomous" or "no plan approval" in the prompt. You can also press Shift+Tab to enter Claude Code's plan mode before you invoke builder-mode.
 
-好的提示应写清三件事：目标、完成条件、哪些东西不能改。
+The mode is sticky: "continue" stays on the same playbook. Say "new task" when you switch topics.
 
-## 包含什么
+A good prompt states three things: the goal, what done looks like, and what must not change.
 
-**核心**
+## What's included
 
-| 技能 | 作用 |
+**Core**
+
+| Skill | Purpose |
 | --- | --- |
-| `init` | 在项目里一次性完成 builder 的配置，包括生成 AGENTS.md 区块 |
-| `builder-mode` | 总入口和路由，包含 Investigation、Bug fix、Feature 三个 playbook，以及收尾用的 Opening a PR |
-| `create-verification-skill` | 为项目生成 `.claude/skills/verify/` 和 feature map |
-| `correct` | 找出 agent 反复犯的错误，用架构、类型、lint 或测试把它堵住 |
-| `tdd` | 先写失败的测试，再修复 |
-| `how` | 讲清楚一个子系统怎么运作、改动应该放在哪里 |
+| `init` | Sets up builder in a project in one pass, including the AGENTS.md section |
+| `builder-mode` | Entry point and router, with the Investigation, Bug fix, and Feature playbooks and the closing Opening a PR step |
+| `create-verification-skill` | Generates `.claude/skills/verify/` and its feature map for the project |
+| `correct` | Finds a mistake the agent keeps making and blocks it with architecture, types, lint, or tests |
+| `tdd` | Writes the failing test first, then the fix |
+| `how` | Explains how a subsystem works and where a change belongs |
 
-**被核心技能直接引用的技能**
+**Skills the core references directly**
 
-| 技能 | 被谁引用 |
+| Skill | Referenced by |
 | --- | --- |
-| `why` | Bug fix、Investigation |
-| `architect` | builder-mode、Bug fix、Feature |
-| `arena` | Feature（实现方案有多种合理形状时必须使用），architect |
-| `interrogate` | builder-mode、Feature |
+| `why` | Bug fix, Investigation |
+| `architect` | builder-mode, Bug fix, Feature |
+| `arena` | Feature (required when the implementation has several valid shapes), architect |
+| `interrogate` | builder-mode, Feature |
 | `in-your-own-words` | interrogate |
 | `swarm` | builder-mode |
-| `figure-it-out` | builder-mode（没有合适的 playbook 时） |
-| `show-me-your-work` | builder-mode（长任务或无人值守任务） |
-| `unslop`、`technical-writing`、`deslop`、`no-comments` | builder-mode、Opening a PR |
-| `benchmark-checklist` | builder-mode（报告性能数字之前） |
-| `maintain-verification-skill` | create-verification-skill、init |
-| `setup-builder` | builder-mode 的模型配置、init |
-| 24 个 `principle-*` 原则 | builder-mode 的原则索引 |
-| 子 agent `builder-agent`、`comment-sicko` | builder-mode、no-comments |
+| `figure-it-out` | builder-mode (when no playbook fits) |
+| `show-me-your-work` | builder-mode (long or unattended runs) |
+| `unslop`, `technical-writing`, `deslop`, `no-comments` | builder-mode, Opening a PR |
+| `benchmark-checklist` | builder-mode (before reporting a performance number) |
+| `maintain-verification-skill` | create-verification-skill, init |
+| `setup-builder` | builder-mode model configuration, init |
+| 24 `principle-*` skills | builder-mode's principles index |
+| Subagents `builder-agent`, `comment-sicko` | builder-mode, no-comments |
 
-## 控制成本
+## Keeping costs down
 
-`arena`、`architect` 和 `interrogate` 会同时启动多个模型。默认配置是 opus、fable、sonnet、haiku 各跑一份。如果是中小项目，建议在 `/builder:setup-builder` 里把这几个角色缩减到一到两个模型，或者在提示里直接写"不要用 arena"。
+`arena`, `architect`, and `interrogate` run several models at once. By default that is one run each on opus, fable, sonnet, and haiku. For a small or medium project, cut these roles to one or two models in `/builder:setup-builder`, or say "don't use arena" in the prompt.
 
-小任务（只改一个文件、检查方式很明显的改动，或者一行代码的修改）不需要进入 builder-mode。
+Small tasks, such as a contained change to one file with an obvious check or a one-line edit, don't need builder-mode.
 
-## 许可
+## License
 
-MIT。上游版权和许可文件都已保留，详见 [NOTICE.md](NOTICE.md)。
+MIT. All upstream copyright notices and license files are kept. See [NOTICE.md](NOTICE.md).
