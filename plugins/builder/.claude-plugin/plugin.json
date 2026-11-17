@@ -1,7 +1,7 @@
 {
   "name": "builder",
   "displayName": "builder",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A lean, verification-first skill pack for small and medium projects: builder-mode with the Investigation, Bug fix, and Feature playbooks, plus create-verification-skill, correct, tdd, how, and the skills they reference. Derived from pstack by Lauren Tan via the pstack-claude port.",
   "author": {
     "name": "yongtao-wang",

@@ -1,11 +1,11 @@
 ---
 name: tdd
-description: "Use only when the user explicitly asks for TDD, a failing test, or a regression test, OR when the bug has an obvious cheap local test target. Skip when the test path is unclear, expensive, integration-heavy, or not requested."
+description: "Use when the user or the project's AGENTS.md asks for TDD, a failing test, or a regression test, or when a bug fix or behavior change has an obvious cheap local test target. Skip when the test path is unclear, expensive, or integration-heavy, and say why."
 ---
 
-# TDD Bug Fix
+# TDD
 
-When fixing a bug with a clear, cheap test path, make the broken behavior executable before changing production code. The goal is a focused regression test that fails before the fix and passes after it.
+When fixing a bug or changing behavior with a clear, cheap test path, make the broken behavior executable before changing production code. The goal is a focused regression test that fails before the fix and passes after it.
 
 Do not force a test when it would be impractical. If the available test would require broad harness setup, brittle mocks, slow end-to-end infrastructure, production-only state, vague reproduction steps, or large unrelated fixture churn, skip adding a new test and use the closest useful verification instead.
 

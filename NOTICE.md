@@ -18,4 +18,6 @@ The modifications are (c) 2026 yongtao-wang under the same MIT license ([LICENSE
 - Kept three playbooks (Investigation, Bug fix, Feature) and the Opening a PR step they call. Removed the other playbooks and every trigger that routed to them. `figure-it-out` is the fallback when no playbook fits.
 - Kept only skills that the core set references directly. Removed every non-Claude-Code platform mapping.
 - Rewrote the SessionStart hook as a small shell script with the same `session hook: off` switch.
+- Added `init`, which writes a managed builder section into AGENTS.md after the user approves the diff.
+- Added a plan-approval gate to the Bug fix and Feature playbooks, a known-issues lookup to Bug fix, a docs-update step to both, and a failing-test-first step to Feature. Broadened `tdd` to cover behavior changes.
 - Moved `claude-project-dir.mjs` from `reflect` to `show-me-your-work`, the only included skill that calls it.

@@ -6,13 +6,16 @@ Be scientific. Every shipped line traces to runtime evidence. Belt-and-suspender
 
 Before the fan-out in steps 2–3, check the [focused-fix exception](#focused-fix-exception). Select known non-sensitive fields before printing diagnostic configuration or service responses; do not dump whole configurations or environments.
 
-1. Reproduce it yourself on the matching surface via the driver skill (Non-negotiables), even when a debug or instrumentation protocol says to ask the user to reproduce. Ask the user only with a stated, specific reason the control surface cannot reach the target, and only after driving it as far as it goes. If it won't reproduce directly, synthesize the trigger, tighten conditions, or instrument until it fires.
+1. Search the project's known-issues doc first when AGENTS.md names one. A match with a recorded cause or workaround shortens steps 1–2; cite it. Then reproduce it yourself on the matching surface via the driver skill (Non-negotiables), even when a debug or instrumentation protocol says to ask the user to reproduce. Ask the user only with a stated, specific reason the control surface cannot reach the target, and only after driving it as far as it goes. If it won't reproduce directly, synthesize the trigger, tighten conditions, or instrument until it fires.
 2. Binary-search the cause. Form the candidate hypotheses, then rule them out until one survives. Seed them with `how` over the affected subsystem and the **why** skill for regression history. Each pass, take the split that cuts the most remaining problem space, get runtime evidence, eliminate. When program state is unclear, add instrumentation or logging and read it as the code runs. Don't guess. Drive a long or stubborn hunt with Claude Code's `loop` skill. Confirm the surviving *mechanism* with runtime evidence before the step-3 architect/interrogate fan-out.
-3. Plan the fix. If it crosses a function boundary, `architect` first. Delegate implementation to a subagent using your configured bug-fix model (default in builder-mode's Models section) with a specific scope.
-4. Verify on the same surface. The original repro now passes. "Inconclusive" or wrong-surface is not a pass. Flag it. Unit tests show branch behavior, not bug absence.
-5. Stage the commits so the failing repro lands before the fix in git history. See the **tdd** skill for the failing-test-first cadence when the bug has a cheap local test path. Skip it when the test would be expensive, integration-heavy, or unclear.
+3. Plan the fix. If it crosses a function boundary, `architect` first.
+4. Get the plan approved per builder-mode's **Plan approval**. No production code changes before the answer.
+5. Delegate implementation to a subagent using your configured bug-fix model (default in builder-mode's Models section) with a specific scope and the approved plan.
+6. Verify on the same surface. The original repro now passes. "Inconclusive" or wrong-surface is not a pass. Flag it. Unit tests show branch behavior, not bug absence.
+7. Stage the commits so the failing repro lands before the fix in git history. See the **tdd** skill for the failing-test-first cadence when the bug has a cheap local test path. Skip it when the test would be expensive, integration-heavy, or unclear.
    This is the canonical **sequence-verifiable-units** principle skill, the failing test first and the fix on top.
-6. Run **Opening a PR**.
+8. When the fix changes documented behavior, update the docs and the feature-map file in the same change. If you found an issue you won't fix now, add it to the known-issues doc.
+9. Run **Opening a PR**.
 
 For any bug fix, run `architect` in step 3 before implementing changes to interfaces, ownership, schema, migration behavior, concurrency or transaction guarantees, or deployment or routing contracts, even within one function. Before marking the fix merge-ready, require an independent correctness reviewer for changes to code that enforces a security or data-integrity invariant, including an atomic eligibility guard, even when the fix preserves that invariant. Follow the closed-review-gate rule in Subagents if a reviewer cannot run.
 

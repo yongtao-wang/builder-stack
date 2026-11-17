@@ -138,6 +138,18 @@ Use the **figure-it-out** skill whenever no bundled playbook fits (a refactor, a
 
 **Small tasks.** A contained change to one file with an obvious check, a question with a one-line answer, or a fully specified one-line edit does not need a playbook. Work directly and verify on the real artifact.
 
+**Plan approval.** Bug fix and Feature stop for the user's approval before any code changes. Investigation is read-only and needs none. Write the plan from read-only work and send it with `AskUserQuestion` (options: approve, change, stop). Wait for the answer. The plan names:
+
+- the goal in one sentence
+- done criteria, each one a falsifiable check
+- the files to change, and the module boundaries the change crosses
+- the failing test to write first, or why no cheap local test exists
+- how you will verify on the real surface (the `verify` skill, a command, a reproduction)
+- the docs and feature-map files to update
+- the risks and open decisions
+
+Skip approval only when the user said so for this task ("autonomous", "no plan approval", "don't ask") or the task is a small task as defined above. Record the skip in the todolist as `skip: <reason>`. A "change" answer revises the plan and asks again. A plan that changes materially during the build goes back for approval before the diverging code lands.
+
 **Project playbooks.** A repository can add playbooks of its own under `.agents/playbooks/`, one Markdown file each. Playbooks under `~/.agents/playbooks/` take the same form and apply in every repository; when playbooks from both folders fit, apply the home folder's changes first. Each file's frontmatter names `extends`, the bundled playbook stems it builds on (comma-separated, or empty for a standalone playbook), and `when`, one sentence naming the requests it serves. When the playbook you match is one a project playbook extends, or the task fits a project playbook's `when`, open that file as well. Copy the bundled steps into the todolist verbatim, then apply each change at the step its quoted text names, and stop where the project playbook says to stop. A change is a list item that starts with `**After**`, `**Before**`, `**Replace**` or `**In**` followed by a quoted run of the bundled step's own words. Before you apply a project playbook, run `node ${CLAUDE_PLUGIN_ROOT}/skills/builder-mode/scripts/check-playbooks.mjs` from the repository root. It checks both folders and fails when a project playbook extends a playbook this version lacks, or quotes step text this version no longer has, which happens when a pstack upgrade rewrites a step. Report each line it prints to the user and do not guess where an unanchored change belongs.
 
 ## Models
