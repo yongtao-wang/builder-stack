@@ -1,0 +1,21 @@
+{
+  "name": "builder",
+  "displayName": "builder",
+  "version": "0.1.0",
+  "description": "A lean, verification-first skill pack for small and medium projects: builder-mode with the Investigation, Bug fix, and Feature playbooks, plus create-verification-skill, correct, tdd, how, and the skills they reference. Derived from pstack by Lauren Tan via the pstack-claude port.",
+  "author": {
+    "name": "yongtao-wang",
+    "url": "https://github.com/yongtao-wang"
+  },
+  "homepage": "https://github.com/yongtao-wang/builder-stack",
+  "repository": "https://github.com/yongtao-wang/builder-stack",
+  "license": "MIT",
+  "keywords": [
+    "builder-mode",
+    "verification",
+    "tdd",
+    "feature-map",
+    "claude-code",
+    "skills"
+  ]
+}

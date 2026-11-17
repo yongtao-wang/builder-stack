@@ -1,0 +1,13 @@
+{
+  "name": "builder-stack",
+  "owner": { "name": "yongtao-wang", "url": "https://github.com/yongtao-wang" },
+  "description": "A lean, verification-first Claude Code skill pack derived from pstack.",
+  "plugins": [
+    {
+      "name": "builder",
+      "source": "./plugins/builder",
+      "description": "builder-mode plus verification, correction, TDD, and code-understanding skills for small and medium projects.",
+      "version": "0.1.0"
+    }
+  ]
+}
