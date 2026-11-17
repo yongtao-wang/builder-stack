@@ -86,4 +86,4 @@ builder-mode 会根据请求选一个 playbook，把它的步骤原样抄进任�
 
 ## 许可
 
-MIT。上游版权和许可文件都已保留，详见 [NOTICE.md](NOTICE.md)。
+MIT。所有上游版权声明都合并在 [LICENSE](LICENSE) 里，来源说明见 [NOTICE.md](NOTICE.md)。

@@ -1,14 +1,14 @@
 # NOTICE
 
-builder-stack is a trimmed derivative of MIT-licensed work. All upstream copyright notices and license terms are preserved.
+builder-stack is a trimmed derivative of MIT-licensed work. Every upstream work uses the same MIT text, so [LICENSE](LICENSE) carries all of their copyright notices in one file.
 
 ## Upstream sources
 
 | Included work | Upstream | Copyright | License |
 | --- | --- | --- | --- |
-| `builder-mode` (from `poteto-mode`), its playbooks and `bugbot-triage.md`, `how`, `why`, `architect`, `arena`, `interrogate`, `swarm`, `unslop`, `technical-writing`, `no-comments`, `benchmark-checklist`, `show-me-your-work`, `figure-it-out`, `tdd`, `correct`, `in-your-own-words`, `create-verification-skill`, `maintain-verification-skill`, every `principle-*` skill, `builder-agent` (from `poteto-agent`), `comment-sicko` | [cursor/plugins/pstack](https://github.com/cursor/plugins/tree/main/pstack) | (c) 2026 Lauren Tan | [MIT](LICENSE-pstack) |
-| `deslop` | [cursor/plugins/cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit) | (c) 2026 Cursor | [MIT](LICENSE-cursor-team-kit) |
-| Claude Code port of all of the above, `setup-builder` (from `setup-pstack`), the SessionStart hook design | [michael-denyer/pstack-claude @ a12b047](https://github.com/michael-denyer/pstack-claude/tree/a12b04786023e762f12f5de7bb5fafb8c23f8c36) | (c) 2026 Michael Denyer | [MIT](LICENSE-pstack-claude) |
+| `builder-mode` (from `poteto-mode`), its playbooks and `bugbot-triage.md`, `how`, `why`, `architect`, `arena`, `interrogate`, `swarm`, `unslop`, `technical-writing`, `no-comments`, `benchmark-checklist`, `show-me-your-work`, `figure-it-out`, `tdd`, `correct`, `in-your-own-words`, `create-verification-skill`, `maintain-verification-skill`, every `principle-*` skill, `builder-agent` (from `poteto-agent`), `comment-sicko` | [cursor/plugins/pstack](https://github.com/cursor/plugins/tree/main/pstack) | (c) 2026 Lauren Tan | MIT |
+| `deslop` | [cursor/plugins/cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit) | (c) 2026 Cursor | MIT |
+| Claude Code port of all of the above, `setup-builder` (from `setup-pstack`), the SessionStart hook design | [michael-denyer/pstack-claude @ a12b047](https://github.com/michael-denyer/pstack-claude/tree/a12b04786023e762f12f5de7bb5fafb8c23f8c36) | (c) 2026 Michael Denyer | MIT |
 
 ## What changed
 

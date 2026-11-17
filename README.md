@@ -86,4 +86,4 @@ Small tasks, such as a contained change to one file with an obvious check or a o
 
 ## License
 
-MIT. All upstream copyright notices and license files are kept. See [NOTICE.md](NOTICE.md).
+MIT. [LICENSE](LICENSE) carries every upstream copyright notice. See [NOTICE.md](NOTICE.md).
